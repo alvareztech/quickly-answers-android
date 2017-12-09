@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_general"
+    tools:context="tech.alvarez.quicklyanswers.MainActivity">
+
+    <EditText
+        android:id="@+id/codeEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
+        android:hint="@string/question_code"
+        android:imeOptions="actionGo"
+        android:inputType="textNoSuggestions"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|bottom"
+        android:layout_margin="16dp"
+        android:onClick="openCreateQuestion"
+        android:src="@drawable/ic_advertising" />
+
+</android.support.design.widget.CoordinatorLayout>

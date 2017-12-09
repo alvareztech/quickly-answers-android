@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Quickly Answers</string>
+    <string name="question_code">Código</string>
+    <string name="your_phone">Tu teléfono</string>
+    <string name="your_code">Tu código</string>
+    <string name="question">Pregunta</string>
+    <string name="add_answer">Adicionar otra respuesta</string>
+    <string name="answer_1">Respuesta 1</string>
+    <string name="answer_2">Respuesta 2</string>
+    <string name="answer_3">Respuesta 3</string>
+    <string name="answer_4">Respuesta 4</string>
+</resources>
