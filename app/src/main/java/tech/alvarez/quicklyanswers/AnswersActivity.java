@@ -176,4 +176,8 @@ public class AnswersActivity extends AppCompatActivity {
         View rootView = findViewById(R.id.rootView);
         Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT).show();
     }
+
+    public void cancel(View view) {
+        finish();
+    }
 }

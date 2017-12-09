@@ -9,4 +9,8 @@
     <string name="answer_2">Respuesta 2</string>
     <string name="answer_3">Respuesta 3</string>
     <string name="answer_4">Respuesta 4</string>
+    <string name="create_question_message">Ingresa las posibles respuestas que podrán realizar tus contactos.</string>
+    <string name="insert_code_message">Ingresa el código de una pregunta para responderla.</string>
+    <string name="phone_message">Ingresa tu número telefónico.</string>
+    <string name="code_phone_message">Ingresa el código que te llego por SMS.</string>
 </resources>

@@ -11,12 +11,12 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
 
 import tech.alvarez.quicklyanswers.model.Question;
+import tech.alvarez.quicklyanswers.util.RandomString;
 import tech.alvarez.quicklyanswers.util.Util;
 
 public class CreateQuestionActivity extends AppCompatActivity {
@@ -29,6 +29,8 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
     private FloatingActionButton fab;
     private ProgressBar progressBar;
+
+    private RandomString randomString;
 
     private FirebaseFirestore db;
 
@@ -47,40 +49,54 @@ public class CreateQuestionActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        randomString = new RandomString(6);
+
         db = FirebaseFirestore.getInstance();
     }
 
 
     public void saveAnswer(View view) {
 
-        String question = questionEditText.getText().toString();
-        String answer1 = answer1EditText.getText().toString();
-        String answer2 = answer2EditText.getText().toString();
+        String question = questionEditText.getText().toString().trim();
+        String answer1 = answer1EditText.getText().toString().trim();
+        String answer2 = answer2EditText.getText().toString().trim();
+        String answer3 = answer3EditText.getText().toString().trim();
+        String answer4 = answer4EditText.getText().toString().trim();
 
         if (!Util.isQuestionValidate(question)) {
-            showMessage("Su pregunta debe tener al menos 8");
+            showMessage("Su pregunta debe tener al menos 8 caracteres");
             return;
         }
         if (!Util.isAnswerValidate(answer1)) {
-            showMessage("Su respuesta debe tener al menos 2");
+            showMessage("Su respuesta debe tener al menos 2 caracteres");
             return;
         }
         if (!Util.isAnswerValidate(answer2)) {
-            showMessage("Su respuesta debe tener al menos 2");
+            showMessage("Su respuesta debe tener al menos 2 caracteres");
             return;
         }
 
         Question q = new Question();
-        q.setUserCreated("123");
         q.setValue(question);
-        q.setAnswers(Arrays.asList(answer1, answer2));
+        q.setUserCreated("123456");
+
+        if (Util.isAnswerValidate(answer3) && Util.isAnswerValidate(answer4)) {
+            q.setAnswers(Arrays.asList(answer1, answer2, answer3, answer4));
+        } else if (Util.isAnswerValidate(answer3)) {
+            q.setAnswers(Arrays.asList(answer1, answer2, answer3));
+        } else {
+            q.setAnswers(Arrays.asList(answer1, answer2));
+        }
+
+        String generatedCode = randomString.nextString();
 
         startProgress();
         db.collection("questions")
-                .add(q)
-                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                .document(generatedCode)
+                .set(q)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                    public void onComplete(@NonNull Task<Void> task) {
                         endProgress();
                         if (task.isSuccessful()) {
                             goMainScreen();
@@ -89,7 +105,6 @@ public class CreateQuestionActivity extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 
     private void startProgress() {
@@ -119,5 +134,9 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private void showMessage(String message) {
         View rootView = findViewById(R.id.rootView);
         Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    public void cancel(View view) {
+        finish();
     }
 }

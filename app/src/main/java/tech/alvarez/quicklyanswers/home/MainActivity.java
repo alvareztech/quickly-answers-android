@@ -1,23 +1,28 @@
-package tech.alvarez.quicklyanswers;
+package tech.alvarez.quicklyanswers.home;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
+
+import tech.alvarez.quicklyanswers.CreateQuestionActivity;
+import tech.alvarez.quicklyanswers.LogInActivity;
+import tech.alvarez.quicklyanswers.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText codeEditText;
+    private ViewPager viewPager;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAnalytics firebaseAnalytics;
@@ -28,18 +33,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        codeEditText = (EditText) findViewById(R.id.codeEditText);
-        codeEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_GO) {
-                    openAnswersScreen(textView.getText().toString());
-                    handled = true;
-                }
-                return handled;
-            }
-        });
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(sectionsPagerAdapter);
+        ExtensiblePageIndicator extensiblePageIndicator = (ExtensiblePageIndicator) findViewById(R.id.flexibleIndicator);
+        extensiblePageIndicator.initViewPager(viewPager);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
@@ -48,12 +46,6 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.initialize(this, "ca-app-pub-3823502308268398~5551278659");
 
 //        verifyAuthentication();
-    }
-
-    private void openAnswersScreen(String code) {
-        Intent intent = new Intent(this, AnswersActivity.class);
-        intent.putExtra("code", code);
-        startActivity(intent);
     }
 
     private void verifyAuthentication() {
@@ -82,5 +74,25 @@ public class MainActivity extends AppCompatActivity {
     private void showMessage(String message) {
         View rootView = findViewById(R.id.rootView);
         Snackbar.make(rootView, message, Snackbar.LENGTH_SHORT).show();
+    }
+
+    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+
+        public SectionsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                return InsertCodeFragment.newInstance();
+            }
+            return MyQuestionsFragment.newInstance();
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
     }
 }

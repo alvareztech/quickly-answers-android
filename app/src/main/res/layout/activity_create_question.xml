@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
@@ -17,15 +18,29 @@
             android:id="@+id/questionEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="16dp"
             android:hint="@string/question"
+            android:inputType="textNoSuggestions"
             android:textAlignment="center"
             android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/create_question_message"
+            android:textAlignment="center"
+            android:textSize="12sp" />
 
         <EditText
             android:id="@+id/answer1EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
             android:hint="@string/answer_1"
+            android:inputType="textNoSuggestions"
             android:textAlignment="center"
             android:textSize="20sp" />
 
@@ -33,7 +48,10 @@
             android:id="@+id/answer2EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:hint="@string/answer_2"
+            android:inputType="textNoSuggestions"
             android:textAlignment="center"
             android:textSize="20sp" />
 
@@ -41,7 +59,10 @@
             android:id="@+id/answer3EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:hint="@string/answer_3"
+            android:inputType="textNoSuggestions"
             android:textAlignment="center"
             android:textSize="20sp" />
 
@@ -49,7 +70,10 @@
             android:id="@+id/answer4EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:hint="@string/answer_4"
+            android:inputType="textNoSuggestions"
             android:textAlignment="center"
             android:textSize="20sp" />
 
@@ -72,5 +96,18 @@
         android:layout_margin="16dp"
         android:onClick="saveAnswer"
         android:src="@drawable/ic_paper_plane" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/cancelFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|left"
+        android:layout_marginBottom="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="cancel"
+        android:src="@drawable/ic_arrow_back"
+        app:fabSize="mini" />
 
 </android.support.design.widget.CoordinatorLayout>

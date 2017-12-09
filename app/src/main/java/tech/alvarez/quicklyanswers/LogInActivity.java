@@ -1,10 +1,10 @@
 package tech.alvarez.quicklyanswers;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -19,18 +19,20 @@ import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 
 import java.util.concurrent.TimeUnit;
 
+import tech.alvarez.quicklyanswers.home.MainActivity;
 import tech.alvarez.quicklyanswers.util.Message;
 
 public class LogInActivity extends AppCompatActivity {
 
     private View rootView;
+    private TextView phoneTextView;
     private EditText phoneEditText;
+    private TextView codeTextView;
     private EditText codeEditText;
 
     private FirebaseAuth firebaseAuth;
@@ -42,6 +44,7 @@ public class LogInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log_in);
 
         rootView = findViewById(R.id.rootView);
+        phoneTextView = (TextView) findViewById(R.id.phoneTextView);
         phoneEditText = (EditText) findViewById(R.id.phoneEditText);
         phoneEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -54,6 +57,7 @@ public class LogInActivity extends AppCompatActivity {
                 return handled;
             }
         });
+        codeTextView = (TextView) findViewById(R.id.codeTextView);
         codeEditText = (EditText) findViewById(R.id.codeEditText);
         codeEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -92,18 +96,16 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     public void sendVerificationCode() {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber("+59177242424", 60, TimeUnit.SECONDS, this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+        String phone = phoneEditText.getText().toString().trim();
+
+        PhoneAuthProvider.getInstance().verifyPhoneNumber("+591" + phone, 60, TimeUnit.SECONDS, this, new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                Log.d("MYAPP", "onVerificationCompleted:" + phoneAuthCredential);
-
                 signInWithPhoneAuthCredential(phoneAuthCredential);
             }
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-                Log.w("MYAPP", "onVerificationFailed", e);
-
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                     Message.show("Invalid request", rootView);
                 } else if (e instanceof FirebaseTooManyRequestsException) {
@@ -114,7 +116,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 verificationId = verificationId;
-                Message.show("Code sended", rootView);
+                Message.show("Código enviado", rootView);
             }
         });
     }
@@ -126,28 +128,36 @@ public class LogInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("MYAPP", "signInWithCredential:success");
-
-                            FirebaseUser user = task.getResult().getUser();
-
+                            goMainScreen();
                         } else {
-                            // Sign in failed, display a message and update the UI
-                            Log.w("MYAPP", "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
-                                // [START_EXCLUDE silent]
-//                                mVerificationField.setError("Invalid code.");
-                                // [END_EXCLUDE]
+                                Message.show("Datos incorrectos para autenticarse.", rootView);
+                            } else {
+                                Message.show("Error al autenticarse.", rootView);
                             }
-                            // [START_EXCLUDE silent]
-                            // Update UI
-//                            updateUI(STATE_SIGNIN_FAILED);
-                            // [END_EXCLUDE]
                         }
                     }
                 });
 
+    }
+
+    private void goMainScreen() {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void showStep1() {
+        phoneTextView.setVisibility(View.VISIBLE);
+        phoneEditText.setVisibility(View.VISIBLE);
+        codeTextView.setVisibility(View.GONE);
+        codeEditText.setVisibility(View.GONE);
+    }
+
+    private void showStep2() {
+        phoneTextView.setVisibility(View.GONE);
+        phoneEditText.setVisibility(View.GONE);
+        codeTextView.setVisibility(View.VISIBLE);
+        codeEditText.setVisibility(View.VISIBLE);
     }
 
 
