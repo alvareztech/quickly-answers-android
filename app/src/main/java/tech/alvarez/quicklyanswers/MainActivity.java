@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.android.gms.ads.MobileAds;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -19,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     private EditText codeEditText;
 
     private FirebaseAuth firebaseAuth;
+    private FirebaseAnalytics firebaseAnalytics;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         firebaseAuth = FirebaseAuth.getInstance();
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         // AdMob
-        MobileAds.initialize(this, "YOUR_ADMOB_APP_ID");
+        MobileAds.initialize(this, "ca-app-pub-3823502308268398~5551278659");
 
 //        verifyAuthentication();
     }
@@ -67,6 +71,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openCreateQuestion(View view) {
+        Bundle params = new Bundle();
+        params.putString("user", "123");
+        firebaseAnalytics.logEvent("create_question", params);
+
         Intent intent = new Intent(this, CreateQuestionActivity.class);
         startActivity(intent);
     }
