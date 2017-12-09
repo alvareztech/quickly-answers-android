@@ -11,6 +11,7 @@ import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
@@ -33,6 +34,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
     private RandomString randomString;
 
     private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +51,10 @@ public class CreateQuestionActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        randomString = new RandomString(6);
+        randomString = new RandomString(5);
 
         db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
 
@@ -78,7 +81,7 @@ public class CreateQuestionActivity extends AppCompatActivity {
 
         Question q = new Question();
         q.setValue(question);
-        q.setUserCreated("123456");
+        q.setUserCreated(firebaseAuth.getUid());
 
         if (Util.isAnswerValidate(answer3) && Util.isAnswerValidate(answer4)) {
             q.setAnswers(Arrays.asList(answer1, answer2, answer3, answer4));

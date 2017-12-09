@@ -1,6 +1,7 @@
 package tech.alvarez.quicklyanswers.home;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,7 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import tech.alvarez.quicklyanswers.R;
+import tech.alvarez.quicklyanswers.ResultsActivity;
 import tech.alvarez.quicklyanswers.adapters.QuestionsAdapter;
 import tech.alvarez.quicklyanswers.model.Question;
 
@@ -18,6 +27,9 @@ public class MyQuestionsFragment extends Fragment implements QuestionsAdapter.On
 
     private RecyclerView recyclerView;
     private QuestionsAdapter questionsAdapter;
+
+    private FirebaseFirestore db;
+    private FirebaseAuth firebaseAuth;
 
     public MyQuestionsFragment() {
     }
@@ -30,9 +42,9 @@ public class MyQuestionsFragment extends Fragment implements QuestionsAdapter.On
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
 
-        }
+        db = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -49,7 +61,28 @@ public class MyQuestionsFragment extends Fragment implements QuestionsAdapter.On
     }
 
     @Override
-    public void onQuestionClick(Question q) {
+    public void onStart() {
+        super.onStart();
 
+        db.collection("questions")
+                .whereEqualTo("userCreated", firebaseAuth.getUid())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                        questionsAdapter.clear();
+                        for (DocumentSnapshot document : documentSnapshots) {
+                            Question q = document.toObject(Question.class);
+                            q.setId(document.getId());
+                            questionsAdapter.add(q);
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void onQuestionClick(Question q) {
+        Intent intent = new Intent(getActivity(), ResultsActivity.class);
+        intent.putExtra("questionCode", q.getId());
+        startActivity(intent);
     }
 }

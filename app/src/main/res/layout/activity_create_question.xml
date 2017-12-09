@@ -21,7 +21,7 @@
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
             android:hint="@string/question"
-            android:inputType="textNoSuggestions"
+            android:inputType="textNoSuggestions|textCapSentences"
             android:textAlignment="center"
             android:textSize="24sp" />
 
@@ -40,7 +40,7 @@
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
             android:hint="@string/answer_1"
-            android:inputType="textNoSuggestions"
+            android:inputType="textNoSuggestions|textCapSentences"
             android:textAlignment="center"
             android:textSize="20sp" />
 
@@ -51,7 +51,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:hint="@string/answer_2"
-            android:inputType="textNoSuggestions"
+            android:inputType="textNoSuggestions|textCapSentences"
             android:textAlignment="center"
             android:textSize="20sp" />
 
@@ -62,7 +62,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:hint="@string/answer_3"
-            android:inputType="textNoSuggestions"
+            android:inputType="textNoSuggestions|textCapSentences"
             android:textAlignment="center"
             android:textSize="20sp" />
 
@@ -73,7 +73,7 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:hint="@string/answer_4"
-            android:inputType="textNoSuggestions"
+            android:inputType="textNoSuggestions|textCapSentences"
             android:textAlignment="center"
             android:textSize="20sp" />
 

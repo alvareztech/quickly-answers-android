@@ -10,20 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tech.alvarez.quicklyanswers.R;
-import tech.alvarez.quicklyanswers.model.Question;
+import tech.alvarez.quicklyanswers.model.Answer;
 
-public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.ViewHolder> {
+public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHolder> {
 
-    private List<Question> dataset;
-    private OnItemClickListener onItemClickListener;
+    private List<Answer> dataset;
 
-    public interface OnItemClickListener {
-        void onQuestionClick(Question q);
-    }
-
-    public QuestionsAdapter(OnItemClickListener onItemClickListener) {
+    public AnswersAdapter() {
         this.dataset = new ArrayList<>();
-        this.onItemClickListener = onItemClickListener;
     }
 
     @Override
@@ -34,11 +28,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Question q = dataset.get(position);
-        holder.valueTextView.setText(q.getValue());
-        holder.codeTextView.setText(q.getId());
-
-        holder.setOnItemClickListener(q, onItemClickListener);
+        Answer a = dataset.get(position);
+        holder.valueTextView.setText(a.getValue());
+        holder.codeTextView.setText(a.getUser());
     }
 
     @Override
@@ -56,19 +48,10 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
             valueTextView = (TextView) itemView.findViewById(R.id.valueTextView);
             codeTextView = (TextView) itemView.findViewById(R.id.codeTextView);
         }
-
-        public void setOnItemClickListener(final Question q, final OnItemClickListener onItemClickListener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onItemClickListener.onQuestionClick(q);
-                }
-            });
-        }
     }
 
 
-    public void add(Question q) {
+    public void add(Answer q) {
         dataset.add(q);
         notifyDataSetChanged();
     }
