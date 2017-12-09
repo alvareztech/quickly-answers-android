@@ -45,14 +45,12 @@ public class MainActivity extends AppCompatActivity {
         // AdMob
         MobileAds.initialize(this, "ca-app-pub-3823502308268398~5551278659");
 
-//        verifyAuthentication();
+        verifyAuthentication();
     }
 
     private void verifyAuthentication() {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-        if (firebaseUser != null) {
-
-        } else {
+        if (firebaseUser == null) {
             goLogInScreen();
         }
     }
