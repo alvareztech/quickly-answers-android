@@ -10,10 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +22,6 @@ import tech.alvarez.quicklyanswers.R;
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
-    private AdView adView;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAnalytics firebaseAnalytics;
@@ -45,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-        // AdMob
-
 
 //        verifyAuthentication();
     }
