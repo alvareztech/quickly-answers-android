@@ -13,4 +13,6 @@
     <string name="insert_code_message">Ingresa el código de una pregunta para responderla.</string>
     <string name="phone_message">Ingresa tu número telefónico.</string>
     <string name="code_phone_message">Ingresa el código que te llego por SMS.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
