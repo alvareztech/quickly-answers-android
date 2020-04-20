@@ -5,12 +5,21 @@ import java.util.List;
 
 public class Question {
 
+    private String id;
     private String value;
     private String userCreated;
     private List<String> answers;
 
     public Question() {
         answers = new ArrayList<>();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getValue() {
